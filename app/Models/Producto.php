@@ -11,7 +11,7 @@ class Producto extends Model
     use HasFactory, SoftDeletes;
 
     // Nombre de la tabla en la base de datos
-    protected $table = 'products';
+    protected $table = 'producto';
 
     // Campos que se pueden rellenar de forma masiva (Mass Assignment)
     protected $fillable = [
