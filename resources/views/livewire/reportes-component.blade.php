@@ -56,17 +56,29 @@
     </div>
 </div>
 
-@push('scripts')
+<!-- Carga de Chart.js mediante Livewire Assets -->
+@assets
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@endassets
+
+<!-- Script reactivo que se reejecuta automáticamente cada vez que Livewire actualiza datos -->
+@script
 <script>
     let miGrafica = null;
 
-    function renderizarGrafica(fechas, totales) {
-        const ctx = document.getElementById('gananciasChart').getContext('2d');
+    function renderizarGrafica() {
+        const canvas = document.getElementById('gananciasChart');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
         
         if (miGrafica) {
             miGrafica.destroy();
         }
+
+        // Se inyectan directamente los datos actualizados desde PHP
+        const fechas = @js($graficaFechas);
+        const totales = @js($graficaTotales);
 
         miGrafica = new Chart(ctx, {
             type: 'bar',
@@ -88,20 +100,6 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        renderizarGrafica(@json($graficaFechas), @json($graficaTotales));
-    });
-
-    // Actualizar la gráfica cada vez que Livewire termine de actualizar los datos
-    document.addEventListener('livewire:initialized', () => {
-        Livewire.on('component-rendered', () => {
-            // Se actualiza con los nuevos datos inyectados
-        });
-    });
-
-    // Escuchar cambios de Livewire para refrescar Chart.js de forma nativa
-    window.addEventListener('livewire:navigated', () => {
-        renderizarGrafica(@json($graficaFechas), @json($graficaTotales));
-    });
+    renderizarGráfica = renderizarGrafica();
 </script>
-@endpush
+@endscript

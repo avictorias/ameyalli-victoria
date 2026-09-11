@@ -49,7 +49,7 @@ class ReportesComponent extends Component
             }
         }
 
-        // Datos para la gráfica transformados a arrays nativos de PHP
+        // Datos para la gráfica
         $gananciasPorDia = Pedido::whereIn('id', $pedidosIds)
             ->get()
             ->groupBy(function($pedido) {
@@ -64,7 +64,5 @@ class ReportesComponent extends Component
             'graficaFechas' => $gananciasPorDia->keys()->values()->toArray(),
             'graficaTotales' => $gananciasPorDia->values()->toArray(),
         ])->layout('layouts.app');
-
-        
     }
 }

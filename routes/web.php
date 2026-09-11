@@ -27,7 +27,9 @@ Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/productos', AdminProductos::class)->name('productos');
 });
-Route::get('/admin/reportes', ReportesComponent::class)->name('admin.reportes');
+Route::get('/admin/reportes', ReportesComponent::class)
+->middleware(['auth'])
+->name('admin.reportes');
 
 
 // Ruta temporal para evitar errores de logout
