@@ -70,7 +70,7 @@
     @else
         <div class="text-center py-12 bg-white border rounded-xl shadow-sm">
             <p class="text-gray-500 text-base mb-4">Tu carrito está vacío.</p>
-            <a href="{{ route('catalogo') }}" class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm">Ver Catálogo</a>
+            <a href="{{ route('tienda') }}" class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm">Ver Catálogo</a>
         </div>
     @endif
 </div>

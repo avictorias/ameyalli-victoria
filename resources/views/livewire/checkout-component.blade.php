@@ -17,7 +17,7 @@
         <div class="bg-white border rounded-xl p-8 text-center shadow-sm">
             <h2 class="text-2xl font-bold text-green-600 mb-2">¡Pedido Generado Correctamente!</h2>
             <p class="text-gray-600 mb-6 text-sm">Hemos procesado tu pago de forma simulada y guardado los detalles de tu cotización.</p>
-            <a href="{{ route('catalogo') }}" class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm">Volver al Catálogo</a>
+            <a href="{{ route('tienda') }}" class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm">Volver al Catálogo</a>
         </div>
     @else
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -38,7 +38,7 @@
                         @error('numero_tarjeta') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
-                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition text-sm shadow">
+                    <button type="submit" class="w-full bg-green-600 text-base font-bold py-3 rounded-lg hover:bg-green-700 transition text-sm shadow">
                         Validar Pago y Generar Pedido
                     </button>
                 </form>

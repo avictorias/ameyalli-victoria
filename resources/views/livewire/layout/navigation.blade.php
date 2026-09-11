@@ -33,6 +33,9 @@ new class extends Component
                     <x-nav-link :href="route('admin.productos')" :active="request()->routeIs('admin.productos')" wire:navigate>
                         {{ __('Administración') }}
                     </x-nav-link>
+                     <x-nav-link :href="route('admin.reportes')" :active="request()->routeIs('admin.reportes')" wire:navigate>
+                        {{ __('Reportes') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Tienda en línea') }}
                     </x-nav-link>
@@ -98,12 +101,19 @@ new class extends Component
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('tienda')" :active="request()->routeIs('tienda')" wire:navigate>
-                {{ __('Tienda') }}
-            </x-responsive-nav-link>
+            
 
             <x-responsive-nav-link :href="route('admin.productos')" :active="request()->routeIs('admin.productos')" wire:navigate>
                 {{ __('Administración') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.reportes')" :active="request()->routeIs('admin.reportes')" wire:navigate>
+                {{ __('Reportes') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tienda')" :active="request()->routeIs('tienda')" wire:navigate>
+                {{ __('Tienda') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('carrito')" :active="request()->routeIs('carrito')" wire:navigate>
+                {{ __('Carrito') }}
             </x-responsive-nav-link>
         </div>
 
@@ -121,7 +131,7 @@ new class extends Component
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Cerrar sesión') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

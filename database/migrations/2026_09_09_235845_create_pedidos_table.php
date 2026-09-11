@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
+            $table->string('folio')->unique();
+            $table->string('correo');
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('impuestos', 10, 2);
+            $table->decimal('total', 10, 2);
+            $table->string('estatus')->default('completado');
+            $table->timestamp('fecha')->useCurrent();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('pedidos');

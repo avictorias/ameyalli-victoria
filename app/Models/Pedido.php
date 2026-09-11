@@ -24,6 +24,6 @@ class Pedido extends Model
     // Relación con los detalles del pedido
     public function detalles()
     {
-        return $this->hasMany(PedidoDetalle::class, 'pedido_id');
+        return $this->hasMany(Pedido_detalle::class, 'pedido_id');
     }
 }
