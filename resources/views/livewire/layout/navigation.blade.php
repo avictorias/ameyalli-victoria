@@ -30,18 +30,25 @@ new class extends Component
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('admin.productos')" :active="request()->routeIs('admin.productos')" wire:navigate>
+                        {{ __('Administración') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                        {{ __('Tienda en línea') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('carrito')" :active="request()->routeIs('carrito')" wire:navigate>
+                        {{ __('Carrito') }}
                     </x-nav-link>
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                @auth
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                            <div x-data="{{ json_encode(['name' => auth()->user()->name ?? 'Usuario']) }}" x-text="name"></div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -52,18 +59,28 @@ new class extends Component
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile')" wire:navigate>
-                            {{ __('Profile') }}
+                        <!-- Elimina o comenta esta línea del Profile -->
+                        {{--
+    <x-dropdown-link :href="route('profile')">
+        {{ __('Profile') }}
                         </x-dropdown-link>
+                        --}}
 
-                        <!-- Authentication -->
-                        <button wire:click="logout" class="w-full text-start">
-                            <x-dropdown-link>
-                                {{ __('Log Out') }}
+                        <!-- Authentication (Cerrar sesión) -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                                {{ __('Cerrar sesión') }}
                             </x-dropdown-link>
-                        </button>
+                        </form>
                     </x-slot>
                 </x-dropdown>
+                @else
+                <div class="space-x-4">
+                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Iniciar sesión</a>
+                    <a href="{{ route('register') }}" class="text-sm text-gray-700 underline">Registrar</a>
+                </div>
+                @endauth
             </div>
 
             <!-- Hamburger -->
@@ -81,30 +98,39 @@ new class extends Component
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('tienda')" :active="request()->routeIs('tienda')" wire:navigate>
+                {{ __('Tienda') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.productos')" :active="request()->routeIs('admin.productos')" wire:navigate>
+                {{ __('Administración') }}
             </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
+            @auth
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
-                <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile')" wire:navigate>
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
                 <!-- Authentication -->
-                <button wire:click="logout" class="w-full text-start">
-                    <x-responsive-nav-link>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault(); this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
-                </button>
+                </form>
             </div>
+            @else
+            <div class="space-y-1 px-4 py-2">
+                <a href="{{ route('login') }}" class="block text-sm font-medium text-gray-600 hover:text-gray-900">Iniciar sesión</a>
+                <a href="{{ route('register') }}" class="block text-sm font-medium text-gray-600 hover:text-gray-900">Registrar</a>
+            </div>
+            @endauth
         </div>
     </div>
 </nav>

@@ -7,7 +7,7 @@ use App\Models\Producto;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads; // <-- 1. Importar el rasgo para subir archivos
 use Illuminate\Support\Facades\Storage; // <-- Para manejar archivos guardados
-
+use App\Services\CurrencyService;
 class AdminProductos extends Component
 {
     use WithPagination;
@@ -57,11 +57,11 @@ class AdminProductos extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function render()
+  public function render()
     {
         return view('livewire.admin-productos', [
             'productos' => Producto::paginate(10)
-        ]);
+        ])->layout('layouts.app'); // <-- Añade esta línea al final
     }
 
     public function create()
@@ -184,5 +184,37 @@ class AdminProductos extends Component
     {
         Producto::findOrFail($id)->delete();
         session()->flash('message', 'Producto eliminado exitosamente.');
+    }
+
+
+
+    // Se ejecuta al escribir en el campo de USD y calcula el MXN usando el servicio (Redis / API)
+    public function updatedPrecioUsd($value)
+    {
+        if (is_numeric($value) && $value > 0) {
+            $currencyService = new CurrencyService();
+            $rate = $currencyService->getUsdToMxnRate(); // Consulta Redis o la API externa
+            
+            // Calcula el equivalente en MXN redondeado a 2 decimales
+            $this->precio_mxn = round($value * $rate, 2);
+        } elseif (empty($value)) {
+            $this->precio_mxn = '';
+        }
+    }
+
+    // Se ejecuta al escribir en el campo de MXN y calcula el USD de forma inversa
+    public function updatedPrecioMxn($value)
+    {
+        if (is_numeric($value) && $value > 0) {
+            $currencyService = new CurrencyService();
+            $rate = $currencyService->getUsdToMxnRate(); // Consulta Redis o la API externa
+            
+            if ($rate > 0) {
+                // Calcula el equivalente en USD redondeado a 2 decimales
+                $this->precio_usd = round($value / $rate, 2);
+            }
+        } elseif (empty($value)) {
+            $this->precio_usd = '';
+        }
     }
 }
